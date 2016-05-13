@@ -18,7 +18,6 @@ public class MultiReadHttpServletRequest extends HttpServletRequestWrapper {
     private final byte[] body
 
     public MultiReadHttpServletRequest(HttpServletRequest httpServletRequest) {
-
         super(httpServletRequest);
         try {
             InputStream inputStream = httpServletRequest.getInputStream();

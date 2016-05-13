@@ -1,3 +1,5 @@
+import grails.plugin.multiReadRequest.MultiReadServletFilter
+
 class MultiReadRequestGrailsPlugin {
     def version = "0.1"
     def grailsVersion = "2.5 > *"
@@ -23,13 +25,17 @@ Brief summary/description of the plugin.
     def issueManagement = [ system: "GitHub", url: "https://github.com/puneetbehl/multi-read-request/issues" ]
     def scm = [ url: "https://github.com/puneetbehl/multi-read-request" ]
 
+	def doWithSpring = {
+        multiReadServletFilter(MultiReadServletFilter)
+    }
+
 	def doWithWebDescriptor = { xml ->
 		def contextParam = xml.'context-param'
 
 		contextParam[contextParam.size() - 1] + {
 			'filter' {
 				'filter-name'('multiReadServletFilter')
-				'filter-class'(grails.plugin.multiReadRequest.MultiReadServletFilter)
+				'filter-class'(org.springframework.web.filter.DelegatingFilterProxy.name)
 			}
 		}
 
@@ -39,7 +45,7 @@ Brief summary/description of the plugin.
 		filter[filter.size() - 1] + {
 			'filter-mapping' {
 				'filter-name'('multiReadServletFilter')
-				'url-pattern'('/*')
+				'url-pattern'('/api/*')
 			}
 		}
 	}
